@@ -25,13 +25,14 @@ function Arpy:emit(notes)
         self.note_index = (self.note_index % #self.notes) + 1
         self.note_add_index = (self.note_add_index % #self.note_adds) + 1
         local note = notes[self.notes[self.note_index]]
-        note = MusicUtil.snap_note_to_array(note + self.note_adds[self.note_add_index]+24, MusicUtil.generate_scale(0, "major", 8))
+        note = MusicUtil.snap_note_to_array(note + self.note_adds[self.note_add_index]+24, MusicUtil.generate_scale(0, minor_or_major, 8))
         engine.cutoff(2000)
         engine.release(1)
         engine.amp(1)
         engine.hz(MusicUtil.note_num_to_freq(note + 48))
-        crow.output[self.id].volts = (note+(self.id-1)*24-12)/12 
-        print(self.id,note/12)
+        crow.output[self.id].volts = (note-12)/12 + key_change
+        -- crow.output[self.id].volts = 2
+        -- print(self.id,note/12)
     end
 end
 
